@@ -24,23 +24,23 @@ distribuir la prueba con las menores dependencias posibles.
    REDIS_PORT=6379
    REDIS_CLIENT=predis
    ```
-Desde ahora en adelante todos los comandos deben ser ejecutados desde dentro del directorio "project"
-Cambie al directorio "project"
+Desde ahora en adelante todos los comandos deben ser ejecutados desde dentro del directorio clonado (directorio raiz).
+Cambie al directorio "365skill"
 ```
-cd project
+cd 365skill
 ```
 
 3. Instala las dependencias de Laravel.
 ```
-docker run --rm --interactive --tty --volume $PWD:/app composer install
+docker run --rm --interactive --tty --volume $PWD/project:/app composer install
 ```
 
 4. Instale las dependencias de node
 ```
-docker run --volume $PWD:/app --workdir /app --entrypoint npm  node:24.9.0 install
+docker run --volume $PWD/project:/app --workdir /app --entrypoint npm  node:24.9.0 install
 ```
 
-5. Ejecuta inicie el stack. 
+5. Ejecuta el stack.
 ```
 docker-compose up
 ```
@@ -56,7 +56,7 @@ laravel_1                 |   Press Ctrl+C to stop the server
 laravel_1                 |
 ```
 
-5. Obtenga el ID del contenedor corriendo Laravel y aplique las migraciones:
+5. Obtenga el ID del contenedor corriendo Laravel (bitnami/laravel:latest) y aplique las migraciones:
 ```
 docker ps
 CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS              PORTS                              NAMES
@@ -77,7 +77,7 @@ php artisan reservations:simulate-events
 
 9. Simula el dashboard. Ejecute lo siguiente para imprimir actualizaciones WebSocket en la consola.
 ```
-docker run --volume $PWD:/app --network 365test_network --workdir /app node:24.9.0 notificator-viewer.js
+docker run --volume $PWD/project:/app --network 365test_network --workdir /app node:24.9.0 notificator-viewer.js
 ```
 
 ## Justificación Técnica de la Arquitectura
