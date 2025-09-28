@@ -11,7 +11,7 @@ Las instrucciones de prueba hacen un alto uso de docker/docker-compose para pode
 distribuir la prueba con las menores dependencias posibles.
 
 ## Instrucciones para Correr el Proyecto
-1. Clona el repositorio: `git clone 365skill-test`
+1. Clona el repositorio: `git clone https://github.com/CriztianiX/365skill`
 2. No se necesita configurar nada, pero si desea modificar los valores por defecto edita `project/.env` y configura:
    ```env
    DB_CONNECTION=mariadb
