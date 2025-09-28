@@ -1,0 +1,58 @@
+version: '3'
+
+networks:
+  365test_network:
+    name: 365test_network
+    internal: false
+
+services:
+  notificator-dispatcher:
+    image: node:24.9.0
+    entrypoint: "node notificator-dispatcher.js"
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - ./project:/app
+    env_file:
+      - ./project/.env
+    restart: always
+    depends_on:
+      - redis
+    networks:
+      - 365test_network
+
+  redis:
+    image: redis:6.0.5
+    ports:
+      - 26379:6379
+    networks:
+      - 365test_network
+
+  laravel:
+    image: bitnami/laravel:latest
+    ports:
+     - 8000:8000
+    volumes:
+      - ./project:/app
+    env_file:
+      - ./project/.env
+    environment:
+      - LARAVEL_SKIP_COMPOSER_UPDATE=yes
+    networks:
+      - 365test_network
+
+  mariadb:
+    image: bitnami/mariadb:latest
+    ports:
+      - 23306:3306
+    volumes:
+      - ./data/db:/bitnami/mariadb
+    env_file:
+      - ./project/.env
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_DATABASE=${DB_DATABASE}
+    networks:
+      - 365test_network

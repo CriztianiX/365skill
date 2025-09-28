@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: SkyLink API
+  version: 1.0.0
+paths:
+  /api/reservations:
+    post:
+      summary: Create a reservation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                flight_number: { type: string }
+                departure_time: { type: string, format: date-time }
+                passengers: { type: array, items: { type: object, properties: { name: { type: string } } } }
+      responses:
+        '201': { description: Reservation created }
+    get:
+      summary: List reservations
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: date
+          in: query
+          schema: { type: string, format: date }
+      responses:
+        '200': { description: List of reservations }
+  /api/reservations/{id}/status:
+    patch:
+      summary: Update reservation status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status: { type: string, enum: [CONFIRMED, CANCELLED, CHECKED_IN] }
+      responses:
+        '200': { description: Status updated }
+  /api/passengers/{id}:
+    get:
+      summary: Get passenger details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Passenger details }
